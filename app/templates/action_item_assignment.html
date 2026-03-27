@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Item Assigned</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .priority-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .priority-critical {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        .priority-high {
+            background-color: #ffa94d;
+            color: white;
+        }
+        .priority-medium {
+            background-color: #ffd93d;
+            color: #333;
+        }
+        .priority-low {
+            background-color: #6bcf7f;
+            color: white;
+        }
+        .content {
+            padding: 30px;
+        }
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .action-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .action-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+        .action-description {
+            color: #666;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .details-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .details-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .details-table td:first-child {
+            font-weight: 600;
+            color: #667eea;
+            width: 30%;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .details-table td:last-child {
+            color: #333;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            background-color: #667eea;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button:hover {
+            background-color: #5568d3;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>📋 Action Item Assigned</h1>
+            <div class="priority-badge priority-{{ priority|lower }}">{{ priority }}</div>
+        </div>
+        
+        <div class="content">
+            <p class="greeting">Hello,</p>
+            
+            <p>A new compliance action item has been assigned to you based on RBI Circular {{ circular_number }}.</p>
+            
+            <div class="action-box">
+                <p class="action-title">{{ action_title }}</p>
+                {% if description %}
+                <p class="action-description">{{ description }}</p>
+                {% endif %}
+            </div>
+            
+            <table class="details-table">
+                <tr>
+                    <td>Circular</td>
+                    <td>{{ circular_number }} - {{ circular_title }}</td>
+                </tr>
+                {% if product_name %}
+                <tr>
+                    <td>Product Area</td>
+                    <td>{{ product_name }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>Due Date</td>
+                    <td><strong>{{ due_date }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Priority</td>
+                    <td><strong>{{ priority }}</strong></td>
+                </tr>
+            </table>
+            
+            <div class="button-group">
+                <a href="{{ action_link }}" class="button">View Action Item Details</a>
+            </div>
+            
+            <p style="margin-top: 30px; color: #666; font-size: 14px;">
+                Please review the details and begin working on this action item. Mark it as "In Progress" once you start and "Completed" when finished.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated notification from Compliance Autopilot</p>
+            <p><a href="{{ dashboard_link }}">Open Dashboard</a> | <a href="{{ dashboard_link }}/action-items">View All Actions</a></p>
+            <p>&copy; 2026 Compliance Autopilot. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

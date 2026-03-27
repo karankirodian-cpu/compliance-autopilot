@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New RBI Circular Alert</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 30px;
+        }
+        .alert-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .alert-box strong {
+            color: #856404;
+        }
+        .circular-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .detail-row {
+            margin-bottom: 15px;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .detail-value {
+            color: #333;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        .products-list {
+            background-color: #e8f0fe;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .products-list h4 {
+            margin-top: 0;
+            color: #1967d2;
+        }
+        .product-item {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 3px;
+            border-left: 3px solid #1967d2;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button-primary {
+            background-color: #667eea;
+            color: white;
+        }
+        .button-primary:hover {
+            background-color: #5568d3;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .button-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .button-secondary:hover {
+            background-color: #e8e8e8;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🔔 New RBI Circular</h1>
+        </div>
+        
+        <div class="content">
+            <div class="alert-box">
+                <strong>ALERT:</strong> A new RBI circular has been issued and requires immediate attention for your compliance portfolio.
+            </div>
+            
+            <div class="circular-details">
+                <div class="detail-row">
+                    <div class="detail-label">Circular Number</div>
+                    <div class="detail-value">{{ circular_number }}</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Title</div>
+                    <div class="detail-value">{{ title }}</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Issue Date</div>
+                    <div class="detail-value">{{ issue_date }}</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Effective Date</div>
+                    <div class="detail-value">{{ effective_date }}</div>
+                </div>
+                
+                {% if description %}
+                <div class="detail-row">
+                    <div class="detail-label">Description</div>
+                    <div class="detail-value">{{ description[:200] }}...</div>
+                </div>
+                {% endif %}
+            </div>
+            
+            {% if affected_products %}
+            <div class="products-list">
+                <h4>Affected Products</h4>
+                {% for product in affected_products %}
+                <div class="product-item">✓ {{ product }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="button-group">
+                {% if document_url %}
+                <a href="{{ document_url }}" class="button button-primary">View Full Circular</a>
+                {% endif %}
+                <a href="{{ dashboard_link }}" class="button button-primary">Review Impact Assessment</a>
+                <a href="{{ dashboard_link }}/circulars" class="button button-secondary">Go to Dashboard</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated notification from Compliance Autopilot</p>
+            <p><a href="{{ dashboard_link }}">Open Dashboard</a> | <a href="{{ dashboard_link }}/settings">Manage Preferences</a></p>
+            <p>&copy; 2026 Compliance Autopilot. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

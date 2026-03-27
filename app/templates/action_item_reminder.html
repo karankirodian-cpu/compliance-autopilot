@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Item Reminder</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ffa94d 0%, #fd7e14 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 30px;
+        }
+        .reminder-alert {
+            background-color: #ffe8d6;
+            border-left: 4px solid #fd7e14;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .days-counter {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fd7e14;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .days-label {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .action-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #fd7e14;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .action-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+        .action-description {
+            color: #666;
+            margin: 10px 0;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .details-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .details-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .details-table td:first-child {
+            font-weight: 600;
+            color: #fd7e14;
+            width: 30%;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .details-table td:last-child {
+            color: #333;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-pending {
+            background-color: #e8ead8;
+            color: #5f7b14;
+        }
+        .status-in-progress {
+            background-color: #cfe2ff;
+            color: #084298;
+        }
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .priority-critical {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        .priority-high {
+            background-color: #ffa94d;
+            color: white;
+        }
+        .priority-medium {
+            background-color: #ffd93d;
+            color: #333;
+        }
+        .priority-low {
+            background-color: #6bcf7f;
+            color: white;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            background-color: #fd7e14;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button:hover {
+            background-color: #e86c00;
+            box-shadow: 0 4px 12px rgba(253, 126, 20, 0.4);
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer a {
+            color: #fd7e14;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>⏰ Action Item Reminder</h1>
+        </div>
+        
+        <div class="content">
+            <div class="reminder-alert">
+                <strong>Reminder:</strong> You have an upcoming deadline for a compliance action item.
+            </div>
+            
+            <div class="days-counter">{{ days_until_due }}</div>
+            <div class="days-label">Days Until Due</div>
+            
+            <div class="action-box">
+                <p class="action-title">{{ action_title }}</p>
+                {% if description %}
+                <p class="action-description">{{ description }}</p>
+                {% endif %}
+            </div>
+            
+            <table class="details-table">
+                <tr>
+                    <td>Circular</td>
+                    <td>{{ circular_number }}</td>
+                </tr>
+                <tr>
+                    <td>Due Date</td>
+                    <td><strong>{{ due_date }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Priority</td>
+                    <td><span class="priority-badge priority-{{ priority|lower }}">{{ priority }}</span></td>
+                </tr>
+                <tr>
+                    <td>Current Status</td>
+                    <td><span class="status-badge status-{{ status|lower|replace('_', '-') }}">{{ status }}</span></td>
+                </tr>
+            </table>
+            
+            <div class="button-group">
+                <a href="{{ action_link }}" class="button">Update Status</a>
+            </div>
+            
+            <p style="margin-top: 30px; color: #666; font-size: 14px;">
+                Please ensure you complete this action item before the due date. If you need to adjust the deadline or require assistance, please reach out to your compliance manager.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated reminder from Compliance Autopilot</p>
+            <p><a href="{{ dashboard_link }}">Open Dashboard</a> | <a href="{{ dashboard_link }}/action-items">View All Actions</a></p>
+            <p>&copy; 2026 Compliance Autopilot. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

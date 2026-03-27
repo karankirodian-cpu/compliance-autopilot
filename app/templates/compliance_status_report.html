@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Status Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 700px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .header-date {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        .metric-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+        }
+        .status-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .status-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
+        }
+        .status-label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .status-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-top: 8px;
+        }
+        .action-summary {
+            background-color: #f0f4ff;
+            border: 1px solid #cfe2ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .action-summary h3 {
+            margin-top: 0;
+            color: #1967d2;
+            font-size: 16px;
+        }
+        .action-summary .action-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .action-summary .action-row:last-child {
+            border-bottom: none;
+        }
+        .action-label {
+            color: #666;
+        }
+        .action-count {
+            font-weight: 600;
+            color: #333;
+        }
+        .critical-warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .critical-warning strong {
+            color: #856404;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            background-color: #667eea;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button:hover {
+            background-color: #5568d3;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .health-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .health-good {
+            background-color: #6bcf7f;
+        }
+        .health-fair {
+            background-color: #ffa94d;
+        }
+        .health-poor {
+            background-color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>📊 Compliance Status Report</h1>
+            <div class="header-date">{{ report_date }}</div>
+        </div>
+        
+        <div class="content">
+            <p style="margin-bottom: 30px;">Please find your weekly compliance summary below. For detailed insights, visit the dashboard.</p>
+            
+            <div class="summary-grid">
+                <div class="metric-card">
+                    <div class="metric-label">RBI Circulars</div>
+                    <div class="metric-value">{{ total_circulars }}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Total Actions</div>
+                    <div class="metric-value">{{ action_items_pending + action_items_completed }}</div>
+                </div>
+            </div>
+            
+            <div class="action-summary">
+                <h3>Action Items Status</h3>
+                <div class="action-row">
+                    <span class="action-label">Pending</span>
+                    <span class="action-count">{{ action_items_pending }}</span>
+                </div>
+                <div class="action-row">
+                    <span class="action-label">Completed</span>
+                    <span class="action-count">{{ action_items_completed }}</span>
+                </div>
+                <div class="action-row">
+                    <span class="action-label">Overdue</span>
+                    <span class="action-count">{{ action_items_overdue }}</span>
+                </div>
+                <div class="action-row">
+                    <span class="action-label">Critical Priority</span>
+                    <span class="action-count">{{ critical_items }}</span>
+                </div>
+            </div>
+            
+            {% if action_items_overdue > 0 %}
+            <div class="critical-warning">
+                <strong>⚠️ Attention Required:</strong> You have {{ action_items_overdue }} overdue action item(s). Please prioritize completing these to maintain compliance.
+            </div>
+            {% endif %}
+            
+            <div class="status-row">
+                <div class="status-item">
+                    <div class="status-label">Pending Circulars</div>
+                    <div class="status-value">{{ pending_circulars }}</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Critical Items</div>
+                    <div class="status-value">{{ critical_items }}</div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <a href="{{ dashboard_link }}" class="button">View Detailed Dashboard</a>
+            </div>
+            
+            <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                This report is generated automatically. For questions or to adjust reporting frequency, please contact your compliance administrator.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated report from Compliance Autopilot</p>
+            <p><a href="{{ dashboard_link }}">Open Dashboard</a> | <a href="{{ dashboard_link }}/reports">View Analytics</a></p>
+            <p>&copy; 2026 Compliance Autopilot. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

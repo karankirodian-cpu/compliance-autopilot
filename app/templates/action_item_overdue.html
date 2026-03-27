@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Item Overdue</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #d63031 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 30px;
+        }
+        .alert-box {
+            background-color: #ffe5e5;
+            border-left: 4px solid #d63031;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .alert-box strong {
+            color: #9f0d1a;
+        }
+        .days-overdue {
+            font-size: 36px;
+            font-weight: 700;
+            color: #d63031;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .overdue-label {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .action-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #d63031;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .action-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+        .action-description {
+            color: #666;
+            margin: 10px 0;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .details-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .details-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .details-table td:first-child {
+            font-weight: 600;
+            color: #d63031;
+            width: 30%;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .details-table td:last-child {
+            color: #333;
+        }
+        .escalation-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .escalation-box strong {
+            color: #856404;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            background-color: #d63031;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button:hover {
+            background-color: #b91c1c;
+            box-shadow: 0 4px 12px rgba(214, 48, 49, 0.4);
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer a {
+            color: #d63031;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🚨 Action Item Overdue</h1>
+        </div>
+        
+        <div class="content">
+            <div class="alert-box">
+                <strong>URGENT:</strong> The following action item is overdue and requires immediate attention.
+            </div>
+            
+            <div class="days-overdue">{{ days_overdue }}</div>
+            <div class="overdue-label">Days Overdue</div>
+            
+            <div class="action-box">
+                <p class="action-title">{{ action_title }}</p>
+                {% if description %}
+                <p class="action-description">{{ description }}</p>
+                {% endif %}
+            </div>
+            
+            <table class="details-table">
+                <tr>
+                    <td>Circular</td>
+                    <td>{{ circular_number }}</td>
+                </tr>
+                <tr>
+                    <td>Was Due</td>
+                    <td><strong>{{ due_date }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Priority</td>
+                    <td><strong>{{ priority }}</strong></td>
+                </tr>
+            </table>
+            
+            <div class="escalation-box">
+                <strong>Notice:</strong> This item has been flagged for escalation due to overdue status. Please update the status immediately or provide an explanation for the delay.
+            </div>
+            
+            <div class="button-group">
+                <a href="{{ action_link }}" class="button">Complete or Update Item</a>
+            </div>
+            
+            <p style="margin-top: 30px; color: #666; font-size: 14px;">
+                Overdue compliance items pose regulatory risk. Please prioritize completing this action and notifying your compliance manager of any blockers or delays.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an urgent notification from Compliance Autopilot</p>
+            <p><a href="{{ dashboard_link }}">Open Dashboard</a> | <a href="{{ dashboard_link }}/action-items?overdue=true">View All Overdue Items</a></p>
+            <p>&copy; 2026 Compliance Autopilot. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
